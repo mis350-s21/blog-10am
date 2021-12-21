@@ -26,3 +26,18 @@ def unpub_post_list(request):
         'post_list': posts,
     }
     return render(request, 'post_list.html', c)
+
+
+def post_details(request, id):
+    p = Post.objects.get(id=id)
+    c = {
+        'post':p,
+    }
+    return render(request, 'post_details.html', c)
+
+def post_details_slug(request, s):
+    p = Post.objects.get(slug=s)
+    c = {
+        'post':p,
+    }
+    return render(request, 'post_details.html', c)

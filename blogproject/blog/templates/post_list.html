@@ -12,7 +12,10 @@
     <ul>
         {% for p in post_list %}
         <li>
-            {{ p.title }}: <strong>Created {{ p.created_at|timesince }} ago </strong>, status is {{ p.get_status_display }}
+            <a href="{% url 'post_details_slug' p.slug %}">
+            {{ p.title }}: 
+            </a>
+            <strong>Created {{ p.created_at|timesince }} ago </strong>, status is {{ p.get_status_display }}
         </li>
         {% endfor %}
     </ul>
