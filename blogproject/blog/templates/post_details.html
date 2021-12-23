@@ -19,5 +19,20 @@
 <p>
     {{ post.body }}
 </p>
+
+{% if comments %}
+<h2>Comments:</h2>
+<ul>
+    {% for c in post.comment_set.all %}
+    <li>
+        {{ c.comment }} by {{ c.author }} posted {{ c.created_on|timesince }} ago
+    </li>
+<br>
+    the post is : {{ c.post.title }}
+    {% endfor %}
+</ul>
+{% else %}
+<h4>No comments yet..</h4>
+{% endif %}
 </body>
 </html>
