@@ -34,5 +34,11 @@
 {% else %}
 <h4>No comments yet..</h4>
 {% endif %}
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Add Comment">
+</form>
 </body>
 </html>

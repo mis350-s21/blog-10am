@@ -12,7 +12,11 @@
     <ul>
         {% for p in post_list %}
         <li>
+            {% if p.slug %}
+            <a href="{% url 'post_details_slug' p.slug %}">
+                {% else %}
             <a href="{% url 'post_details' p.id %}">
+            {% endif %}
             {{ p.title }}: 
             </a>
             <strong>Created {{ p.created_at|timesince }} ago </strong>, status is {{ p.get_status_display }},

@@ -3,7 +3,7 @@ from django.utils.text import slugify
 
 from .models import Post
 
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 
 # Create your views here.
 
@@ -43,15 +43,39 @@ def post_details_slug(request, s):
     
     p = Post.objects.get(slug=s)
     cs = p.comment_set.all()
-
+    f = CommentForm(request.POST or None, initial={
+        'post': p.id,
+        'author': "Anonymous",
+        })
+    if f.is_valid():
+        f.save()
+        return redirect('post_details_slug', s=p.slug)
+    
     c = {
         'post':p,
         'comments': cs,
+        'form': f,
     }
+
     return render(request, 'post_details.html', c)
 
 def create_post(request):
     f = PostForm(request.POST or None)
+
+    if f.is_valid():
+        p = f.save(commit=False)
+        print("TITLE IS:",p.title)
+        p.slug = slugify(p.title)
+        p.save()
+        return redirect("post_details_slug", s=p.slug)
+    c = {
+        'form': f,
+    }
+    return render(request, 'create_post.html', c)
+
+def update_post(request, id):
+    p = get_object_or_404(Post, id=id)
+    f = PostForm(request.POST or None, instance=p)
 
     if f.is_valid():
         p = f.save(commit=False)
