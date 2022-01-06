@@ -87,3 +87,15 @@ def update_post(request, id):
         'form': f,
     }
     return render(request, 'create_post.html', c)
+
+def delete_post(request, id):
+    p = get_object_or_404(Post, id=id)
+    c = {
+        'message': f"delete post {p.title}",
+    }
+    if "confirm" in request.GET:
+        p.delete()
+        return redirect('post_list')
+    elif "cancel" in request.GET:
+        return redirect('post_list')
+    return render(request, 'confirm.html', c)

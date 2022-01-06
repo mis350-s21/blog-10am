@@ -21,6 +21,7 @@
             </a>
             <strong>Created {{ p.created_at|timesince }} ago </strong>, status is {{ p.get_status_display }},
             comments: {{ p.comment_set.count }}
+            | <a href="{% url 'delete_post' p.id %}">delete</a>
         </li>
         {% endfor %}
     </ul>
