@@ -6,7 +6,10 @@ from . import models
 class PostForm(forms.ModelForm):
     class Meta:
         model = models.Post
-        fields = ['title', 'body',]
+        fields = ['title', 'body','author']
+        widgets = {
+            'author': forms.HiddenInput(),
+        }
 
 class CommentForm(forms.ModelForm):
     class Meta:

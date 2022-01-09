@@ -1,3 +1,5 @@
+from django.contrib.auth import get_user_model
+
 from django.db import models
 
 # Create your models here.
@@ -14,6 +16,9 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     status = models.IntegerField(choices=STATUS, default=0)
+    author = models.ForeignKey(
+        get_user_model(), on_delete=models.CASCADE,
+    )
 
     def __str__(self):
         return f"{self.title}: created at {self.created_at}"

@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.text import slugify
+from django.contrib.auth.decorators import login_required
 
 from .models import Post
 
@@ -59,8 +60,11 @@ def post_details_slug(request, s):
 
     return render(request, 'post_details.html', c)
 
+@login_required
 def create_post(request):
-    f = PostForm(request.POST or None)
+    f = PostForm(request.POST or None, initial={
+        'author': request.user,
+    })
 
     if f.is_valid():
         p = f.save(commit=False)
@@ -73,6 +77,7 @@ def create_post(request):
     }
     return render(request, 'create_post.html', c)
 
+@login_required
 def update_post(request, id):
     p = get_object_or_404(Post, id=id)
     f = PostForm(request.POST or None, instance=p)
@@ -88,6 +93,7 @@ def update_post(request, id):
     }
     return render(request, 'create_post.html', c)
 
+@login_required
 def delete_post(request, id):
     p = get_object_or_404(Post, id=id)
     c = {

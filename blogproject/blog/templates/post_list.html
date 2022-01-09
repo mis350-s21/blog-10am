@@ -1,29 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
     <h1>Latest Posts</h1>
 
     <ul>
         {% for p in post_list %}
         <li>
             {% if p.slug %}
-            <a href="{% url 'post_details_slug' p.slug %}">
+            <a class="btn btn-lg btn-success" href="{% url 'post_details_slug' p.slug %}">
                 {% else %}
-            <a href="{% url 'post_details' p.id %}">
+            <a  class="btn btn-lg btn-success"href="{% url 'post_details' p.id %}">
             {% endif %}
             {{ p.title }}: 
             </a>
             <strong>Created {{ p.created_at|timesince }} ago </strong>, status is {{ p.get_status_display }},
             comments: {{ p.comment_set.count }}
-            | <a href="{% url 'delete_post' p.id %}">delete</a>
+            | <a class="btn btn-lg btn-primary" href="{% url 'delete_post' p.id %}">delete</a>
         </li>
         {% endfor %}
     </ul>
-</body>
-</html>
+
+    <h2>
+        User Examples
+    </h2>
+    {% if request.user.is_authenticated %} <br>
+    <h2>The User is logged in</h2>
+    anything you put here will show only for logged in users
+    {% else %}
+    <h2>User is not logged in</h2>
+    Anything you put here will show only for Non-logged in users
+    {% endif %}
+    
+    {{ request.user.username }} <br>
+    {{ request.user.is_staff }}
+
+    {% endblock %}
